@@ -10,6 +10,11 @@ from pydantic import BaseModel
 app = FastAPI(docs_url=None, redoc_url=None)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
+class SHotel(BaseModel):
+    name: str
+    address: str
+    stars: int
 @app.get("/hotels/")
 def get_hotels(
         location: str,
@@ -17,8 +22,15 @@ def get_hotels(
         date_to: date,
         has_spa: Optional[bool] = None,
         stars: Optional[int] = Query(None, ge=1, le=5),
-):
-    return location, date_from, date_to
+) -> list[SHotel]:
+    hotels = [
+        {
+            "name": "Five days",
+            "address": f"{location}",
+            "stars": stars
+        }
+    ]
+    return hotels
 
 class BookingRequest(BaseModel):
     hotel_id: int
