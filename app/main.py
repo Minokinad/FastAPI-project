@@ -7,7 +7,11 @@ from fastapi.staticfiles import StaticFiles
 
 from pydantic import BaseModel
 
+from app.bookings.router import router as bookings_router
+
 app = FastAPI(docs_url=None, redoc_url=None)
+
+app.include_router(bookings_router)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -15,6 +19,7 @@ class SHotel(BaseModel):
     name: str
     address: str
     stars: int
+
 class SearchHotelArgs:
     def __init__(
         self,
@@ -32,8 +37,9 @@ class SearchHotelArgs:
 
 @app.get("/hotels/")
 def get_hotels(
-        search_args: SearchHotelArgs = Depends(),
-) -> list[SHotel]:
+    search_args: SearchHotelArgs = Depends(),
+) :
+
     hotels = [
         {
             "name": "Five days",
