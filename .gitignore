@@ -1,2 +1,4 @@
 .idea/
 .env
+/app/migrations/versions/
+/app/migrations/README
